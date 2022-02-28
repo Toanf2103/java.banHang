@@ -48,4 +48,92 @@ public class XuLy {
         return users;
     }
     
+    public void addUser(User user){
+        Connection connect = Connect.getJDBCConection();
+        String sql=" INSERT INTO user( name, phoneNumber, userName, password, role, favorite, about)"
+                + " VALUE(?,?,?,?,?,?,?) ";
+        try {
+            PreparedStatement preparedStatement = connect.prepareStatement(sql);
+            
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPhone());
+            preparedStatement.setString(3, user.getUsername());
+            preparedStatement.setString(4, user.getPass());
+            preparedStatement.setString(5, user.getRole());
+            preparedStatement.setString(6, user.getFavorite());
+            preparedStatement.setString(7, user.getAbout());
+            
+            int rs = preparedStatement.executeUpdate();
+            System.out.println(rs);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(XuLy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public int updateUser(User user){
+        Connection connect = Connect.getJDBCConection();
+        String sql = " UPDATE user SET name=?,phoneNumber=?, userName=?, password=?, role=?, "
+                + "favorite=?, about=? WHERE id=?";
+        try {
+            PreparedStatement preparedStatement = connect.prepareStatement(sql);
+            
+            preparedStatement.setString(1,user.getName());
+            preparedStatement.setString(2,user.getPhone());
+            preparedStatement.setString(3, user.getUsername());
+            preparedStatement.setString(4,user.getPass());
+            preparedStatement.setString(5,user.getRole());
+            preparedStatement.setString(6,user.getFavorite());
+            preparedStatement.setString(7,user.getAbout());
+            preparedStatement.setInt(8,user.getId());
+            
+            int rs =preparedStatement.executeUpdate();
+            System.out.println(rs);
+            return 1;
+        } catch (SQLException ex) {
+            Logger.getLogger(XuLy.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+        
+    }
+    
+    public void deleteUser(int id){
+        Connection connect = Connect.getJDBCConection();
+        String sql="delete from User where id =?";
+        try {
+            PreparedStatement preparedStatement = connect.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            int rs=preparedStatement.executeUpdate();
+            System.out.println(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(XuLy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public User getUserById(int id) throws SQLException {
+        User user =new User();
+        Connection connect = Connect.getJDBCConection();
+        String sql ="SELECT * FROM user WHERE id=?";
+       
+            PreparedStatement preparedStatement = connect.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            while(rs.next()){
+                
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setPhone(rs.getString("phoneNumber"));
+                user.setUsername(rs.getString("userName"));
+                user.setPass(rs.getString("password"));
+                user.setRole(rs.getString("role"));
+                user.setFavorite(rs.getString("favorite"));
+                user.setAbout(rs.getString("about"));
+                       
+            }
+            return user; 
+            
+        
+         
+    }
 }
