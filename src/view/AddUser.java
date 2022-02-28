@@ -4,6 +4,9 @@
  */
 package view;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.User;
 import service.UserService;
@@ -228,7 +231,11 @@ public class AddUser extends javax.swing.JFrame {
     }//GEN-LAST:event_phoneAddActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        new ListUser().setVisible(true);
+        try {
+            new ListUser().setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
@@ -266,8 +273,16 @@ public class AddUser extends javax.swing.JFrame {
                 role="Admin";
             }
             user.setRole(role);
-            userService.addUser(user);
-            new ListUser().setVisible(true);
+            try {
+                userService.addUser(user);
+            } catch (SQLException ex) {
+                Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                new ListUser().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.dispose();
         }
         

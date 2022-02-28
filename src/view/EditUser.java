@@ -5,6 +5,8 @@
 package view;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.User;
 import service.UserService;
@@ -277,7 +279,11 @@ public class EditUser extends javax.swing.JFrame {
     }//GEN-LAST:event_phoneEditActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        new ListUser().setVisible(true);
+        try {
+            new ListUser().setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(EditUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
@@ -317,11 +323,20 @@ public class EditUser extends javax.swing.JFrame {
             role="Admin";
         }
         user.setRole(role);
-        int userT= userService.updateUser(user);
+        int userT = 0;
+            try {
+                userT = userService.updateUser(user);
+            } catch (SQLException ex) {
+                Logger.getLogger(EditUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
         if(userT == 1) { // Gọi hàm update bên service
             JOptionPane.showMessageDialog(this, "Sửa thông tin thành công", "Thông báo", JOptionPane.CLOSED_OPTION);
-            new ListUser().setVisible(true);
+            try {
+                new ListUser().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(EditUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
              this.dispose(); 
         } else {
             JOptionPane.showMessageDialog(this, "Sửa thông tin thất bại", "Thông báo", JOptionPane.CLOSED_OPTION);

@@ -19,7 +19,7 @@ import java.sql.ResultSet;
  * @author Toàn
  */
 public class XuLy {
-    public List<User> getAllUser(){
+    public List<User> getAllUser() throws SQLException{
         List<User> users = new ArrayList<User>();
         Connection connect = Connect.getJDBCConection();
         String sql ="SELECT * FROM user";
@@ -45,10 +45,13 @@ public class XuLy {
         } catch (SQLException ex) {
             Logger.getLogger(XuLy.class.getName()).log(Level.SEVERE, null, ex);
         }
+         connect.close();
+       
+       
         return users;
     }
     
-    public void addUser(User user){
+    public void addUser(User user) throws SQLException{
         Connection connect = Connect.getJDBCConection();
         String sql=" INSERT INTO user( name, phoneNumber, userName, password, role, favorite, about)"
                 + " VALUE(?,?,?,?,?,?,?) ";
@@ -69,10 +72,10 @@ public class XuLy {
         } catch (SQLException ex) {
             Logger.getLogger(XuLy.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+         connect.close();
     }
     
-    public int updateUser(User user){
+    public int updateUser(User user) throws SQLException{
         Connection connect = Connect.getJDBCConection();
         String sql = " UPDATE user SET name=?,phoneNumber=?, userName=?, password=?, role=?, "
                 + "favorite=?, about=? WHERE id=?";
@@ -90,15 +93,17 @@ public class XuLy {
             
             int rs =preparedStatement.executeUpdate();
             System.out.println(rs);
+             connect.close();
             return 1;
         } catch (SQLException ex) {
             Logger.getLogger(XuLy.class.getName()).log(Level.SEVERE, null, ex);
+             connect.close();
             return 0;
         }
         
     }
     
-    public void deleteUser(int id){
+    public void deleteUser(int id) throws SQLException{
         Connection connect = Connect.getJDBCConection();
         String sql="delete from User where id =?";
         try {
@@ -109,6 +114,7 @@ public class XuLy {
         } catch (SQLException ex) {
             Logger.getLogger(XuLy.class.getName()).log(Level.SEVERE, null, ex);
         }
+         connect.close();
     }
     public User getUserById(int id) throws SQLException {
         User user =new User();
@@ -131,6 +137,7 @@ public class XuLy {
                 user.setAbout(rs.getString("about"));
                        
             }
+            connect.close();
             return user; 
             
         

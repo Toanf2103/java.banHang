@@ -27,7 +27,7 @@ public class ListUser extends javax.swing.JFrame {
     /**
      * Creates new form ListUer
      */
-    public ListUser() {
+    public ListUser() throws SQLException {
         initComponents();
         userService = new UserService();
         defaultTableModel= new DefaultTableModel(){
@@ -159,7 +159,11 @@ public class ListUser extends javax.swing.JFrame {
     private void f5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f5ActionPerformed
         // TODO add your handling code here:
         defaultTableModel.setRowCount(0); 
-        setTableData(userService.getAllUser());
+        try {
+            setTableData(userService.getAllUser());
+        } catch (SQLException ex) {
+            Logger.getLogger(ListUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_f5ActionPerformed
 
     private void addUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserActionPerformed
@@ -181,9 +185,17 @@ public class ListUser extends javax.swing.JFrame {
             int confirm = JOptionPane.showConfirmDialog(ListUser.this," are you sure you want to delete");
             if (confirm==JOptionPane.YES_OPTION){
                 int userId= Integer.valueOf(String.valueOf(userTable.getValueAt(row, 0)));
-                userService.deleteUser(userId);
+                try {
+                    userService.deleteUser(userId);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ListUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 defaultTableModel.setRowCount(0); 
-                setTableData(userService.getAllUser());
+                try {
+                    setTableData(userService.getAllUser());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ListUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 
@@ -239,7 +251,11 @@ public class ListUser extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListUser().setVisible(true);
+                try {
+                    new ListUser().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ListUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

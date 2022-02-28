@@ -22,21 +22,21 @@ public class UserService {
     
     
     
-    public List<User> getAllUser(){
+    public List<User> getAllUser() throws SQLException{
         return userDao.getAllUser();
     }
 
-   public void addUser(User user){
+   public void addUser(User user) throws SQLException{
        userDao.addUser(user);
    }
-   public void deleteUser(int id){
+   public void deleteUser(int id) throws SQLException{
        userDao.deleteUser(id);
    }
    public User getUserById(int id) throws SQLException{
         
        return userDao.getUserById(id);
    }
-   public int updateUser(User user){
+   public int updateUser(User user) throws SQLException{
       return userDao.updateUser(user);
    }
 }
